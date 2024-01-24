@@ -15,7 +15,6 @@ import random
 
 # Third-party libraries
 import numpy as np
-#esto es una prueba
 
 class Network(object):
 
