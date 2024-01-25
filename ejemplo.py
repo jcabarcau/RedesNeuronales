@@ -11,7 +11,8 @@ net=network.Network([784,30,10])
 
 net.SGD( training_data, 30, 10, 3.0, test_data=test_data)
 
-archivo = open("red_prueba1.pkl",'wb')
+archivo = open("red_prueba1.pkl",'wb') #pkl: Archivo-extensión de la librería Pickle: Vacía todo el contenido del objeto en ese archivo 
+#(Ya no se queda guardado en la memoria, sino que ahora se guarda en el disco).
 pickle.dump(net,archivo)
 archivo.close()
 exit()

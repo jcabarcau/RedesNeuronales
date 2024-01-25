@@ -14,11 +14,12 @@ and omits many desirable features.
 import random
 
 # Third-party libraries
-import numpy as np
+import numpy as np #Librería que ayuda a interpretar los datos como una matríz V[x,y] (con x renglones y y filas), ayudando a 
+#manipular la información de los datos.
 
 class Network(object):
 
-    def __init__(self, sizes):
+    def __init__(self, sizes): #Recibe como argumento la lista de neuronas en sus respectivas filas
         """The list ``sizes`` contains the number of neurons in the
         respective layers of the network.  For example, if the list
         was [2, 3, 1] then it would be a three-layer network, with the
@@ -41,7 +42,8 @@ class Network(object):
             a = sigmoid(np.dot(w, a)+b)
         return a
 
-    def SGD(self, training_data, epochs, mini_batch_size, eta,
+    def SGD(self, training_data, epochs, mini_batch_size, eta, #Se usa para entrenar la red neuronal. Recibe como primer argumento los datos de entrenamiento,
+            # después el número de épocas, después el tamaño de los mini batches, y al final el eta
             test_data=None):
         """Train the neural network using mini-batch stochastic
         gradient descent.  The ``training_data`` is a list of tuples
@@ -64,7 +66,8 @@ class Network(object):
                 for k in range(0, n, mini_batch_size)]
             for mini_batch in mini_batches:
                 self.update_mini_batch(mini_batch, eta)
-            if test_data:
+            if test_data: #Imprime la cantidad de épocas en las que va la simulación (A mayor learning rate, más alto es el número obtenido en la primera época, 
+                #pero si el learning rate es muy pequeño, puede ajustarse mejor a los datos de prueba, o puede tener un sobreajuste de datos).
                 print("Epoch {0}: {1} / {2}".format(
                     j, self.evaluate(test_data), n_test))
             else:
