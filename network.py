@@ -6,27 +6,28 @@ Los gradientes se calculan usando el algoritmo 'backpropagation'.
 (Según el autor, este código no está del todo optimizado y omite muchas características deseables).
 """
 
-#### Libraries
-# Standard library
+#### Librerías
+# Librerías estándar
 import random
 
-# Third-party libraries
-import numpy as np #Librería que ayuda a interpretar los datos como una matríz V[x,y] (con x renglones y y filas), ayudando a 
-#manipular la información de los datos.
+# Librerías de terceros
+import numpy as np #Librería que ayuda a interpretar los datos como una matríz V[x,y] (con x renglones y y filas), ayudando a manipular la información de los datos.
+"""
+Esta librería tiene que ser instalada individualmente en el navegador.
+En el caso de Windows, esta puede instalarse en el Bash de Git, o en Windows PowerShell, con el comando 'pip3 install numpy' (Para Python 3).
+"""
 
-class Network(object):
+class Network(object): #Definimos la clase 'Network' como un objeto.
 
-    def __init__(self, sizes): #Recibe como argumento la lista de neuronas en sus respectivas filas
-        """The list ``sizes`` contains the number of neurons in the
-        respective layers of the network.  For example, if the list
-        was [2, 3, 1] then it would be a three-layer network, with the
-        first layer containing 2 neurons, the second layer 3 neurons,
-        and the third layer 1 neuron.  The biases and weights for the
-        network are initialized randomly, using a Gaussian
-        distribution with mean 0, and variance 1.  Note that the first
-        layer is assumed to be an input layer, and by convention we
-        won't set any biases for those neurons, since biases are only
-        ever used in computing the outputs from later layers."""
+    def __init__(self, sizes): #Definimos el método '__init__', el método de inicialización de una clase, ejecutandose automáticamente cuando se crea una nueva instancia de clase.
+        #Recibe como argumento 'sizes', la lista que especifica el número de neuronas en cada capa de la red neuronal.
+        """
+        La lista 'sizes' (tamaños) contiene el número de neuronas en las respectivas capas de la red.
+        Por ejemplo, si la lista fuera [2, 3, 1], entonces sería una red de 3 capas, donde la primera capa contendría 2 neuronas, la segunda 3, y la tercera 1.
+        Los 'biases' (sesgos) y los 'weights' (pesos) para la red se inicializan aleatoriamente, utilizando una distribución gaussiana con media 0 y varianza 1.
+        Tomar en cuenta que se supone que la primera entrada es una capa de 'inputs' (entradas) y, por convención, no se establecerá ningún 'bias' para esas neuronas,
+            ya que los biases solo se utilizan para calcular los 'outputs' (salidas) de capas posteriores.
+        """
         self.num_layers = len(sizes)
         self.sizes = sizes
         self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
