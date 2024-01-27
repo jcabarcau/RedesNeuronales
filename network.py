@@ -12,10 +12,8 @@ import random
 
 # Librerías de terceros
 import numpy as np #Librería que ayuda a interpretar los datos como una matríz V[x,y] (con x renglones y y filas), ayudando a manipular la información de los datos.
-"""
-Esta librería tiene que ser instalada individualmente en el ordenador.
-En el caso de Windows, esta puede instalarse en el Bash de Git, o en Windows PowerShell, con el comando 'pip3 install numpy' (Para Python 3).
-"""
+# Esta librería tiene que ser instalada individualmente en el ordenador.
+# En el caso de Windows, esta puede instalarse en el Bash de Git, o en Windows PowerShell, con el comando 'pip3 install numpy' (Para Python 3).
 
 class Network(object): #Instrucciones para construir una Red Neuronal. 
     #Definimos la clase 'Network' como un objeto. Las variables en python son 'etiquetas' de los objetos.
@@ -33,15 +31,21 @@ class Network(object): #Instrucciones para construir una Red Neuronal.
         self.sizes = sizes #Almacena la lista de tamaños de capa que se pasaron como argumento
         self.biases = [np.random.randn(y, 1) for y in sizes[1:]] #Crea una lista de matríces aleatorias que se utilizaran como biases para cada capa de red, excepto la primera.
         #En 'np.random.randn(y, 1)', el (y,1) es importante, ya que hace que Python interprete a la matriz como una matriz de 1 columna.
-        #En 'sizes[1:]', el 1: significa 'empezar a leer con el primer índice, de izquierda a derecha'.
-        self.weights = [np.random.randn(y, x)
-                        for x, y in zip(sizes[:-1], sizes[1:])]
+        #En 'sizes[1:]', el 1: significa 'empezar a leer con el primer índice, de izquierda a derecha' (o empieza en el segundo elemento?) [confirmar].
+        self.weights = [np.random.randn(y, x) #Crea una lista de matrices aleatorias que se utilizan como pesos para cada conexión de las capas de la red.
+                        #Cada matriz tiene dimensiones (número de neuronas en la capa siguiente, número de neuronas en la capa actual).
+                        for x, y in zip(sizes[:-1], sizes[1:])] #'zip' (cierre): Función que sirve para 'pegar' las listas en una sola matriz.
+                        #En 'sizes[:-1]', el :-1 significa 'empezar a leer de izquierda a derecha, terminando en el penúltimo elemento' (?) [confirmar también].
 
-    def feedforward(self, a):
-        """Return the output of the network if ``a`` is input."""
-        for b, w in zip(self.biases, self.weights):
-            a = sigmoid(np.dot(w, a)+b)
-        return a
+    def feedforward(self, a): #Se define la función 'feedforward', cuyo primer parámetro es 'self', que hace referencia a la instancia de clase,
+        #el segundo parámetro es 'a', que representa la entrada de la red neuronal.
+        """Devuelve el output de la red si se ingresa un input 'a'."""
+        for b, w in zip(self.biases, self.weights): #Bucle que itera sobre las listas 'self.biases' y 'self.weights' simultáneamente usando la función 'zip', la cual las une.
+            #'b' y 'w' representan los biases y los pesos asociados a una capa específica de la red neuronal.
+            a = sigmoid(np.dot(w, a)+b) #Bucle que realiza la operación de propagación hacia adelante para cada capa de la red neuronal.
+            #'np.dot(w,a)' calcula el producto punto entre los pesos 'w' y el input 'a', sumando el bias 'b'.
+            #La función 'sigmoid' (sigmoide) aplica la función de activación sigmoide a esta suma ponderada. 
+        return a #Devuelve el output de la red.
 
     def SGD(self, training_data, epochs, mini_batch_size, eta, #Se usa para entrenar la red neuronal. Recibe como primer argumento los datos de entrenamiento,
             # después el número de épocas, después el tamaño de los mini batches, y al final el eta
