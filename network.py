@@ -13,11 +13,12 @@ import random
 # Librerías de terceros
 import numpy as np #Librería que ayuda a interpretar los datos como una matríz V[x,y] (con x renglones y y filas), ayudando a manipular la información de los datos.
 """
-Esta librería tiene que ser instalada individualmente en el navegador.
+Esta librería tiene que ser instalada individualmente en el ordenador.
 En el caso de Windows, esta puede instalarse en el Bash de Git, o en Windows PowerShell, con el comando 'pip3 install numpy' (Para Python 3).
 """
 
-class Network(object): #Definimos la clase 'Network' como un objeto.
+class Network(object): #Instrucciones para construir una Red Neuronal. 
+    #Definimos la clase 'Network' como un objeto. Las variables en python son 'etiquetas' de los objetos.
 
     def __init__(self, sizes): #Definimos el método '__init__', el método de inicialización de una clase, ejecutandose automáticamente cuando se crea una nueva instancia de clase.
         #Recibe como argumento 'sizes', la lista que especifica el número de neuronas en cada capa de la red neuronal.
@@ -28,9 +29,11 @@ class Network(object): #Definimos la clase 'Network' como un objeto.
         Tomar en cuenta que se supone que la primera entrada es una capa de 'inputs' (entradas) y, por convención, no se establecerá ningún 'bias' para esas neuronas,
             ya que los biases solo se utilizan para calcular los 'outputs' (salidas) de capas posteriores.
         """
-        self.num_layers = len(sizes)
-        self.sizes = sizes
-        self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
+        self.num_layers = len(sizes) #Almacena el número total de capas en la red neuronal
+        self.sizes = sizes #Almacena la lista de tamaños de capa que se pasaron como argumento
+        self.biases = [np.random.randn(y, 1) for y in sizes[1:]] #Crea una lista de matríces aleatorias que se utilizaran como biases para cada capa de red, excepto la primera.
+        #En 'np.random.randn(y, 1)', el (y,1) es importante, ya que hace que Python interprete a la matriz como una matriz de 1 columna.
+        #En 'sizes[1:]', el 1: significa 'empezar a leer con el primer índice, de izquierda a derecha'.
         self.weights = [np.random.randn(y, x)
                         for x, y in zip(sizes[:-1], sizes[1:])]
 
