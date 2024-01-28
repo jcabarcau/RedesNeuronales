@@ -47,10 +47,17 @@ class Network(object): #Instrucciones para construir una Red Neuronal.
             #La función 'sigmoid' (sigmoide) aplica la función de activación sigmoide a esta suma ponderada. 
         return a #Devuelve el output de la red.
 
-    def SGD(self, training_data, epochs, mini_batch_size, eta, #Se usa para entrenar la red neuronal. Recibe como primer argumento los datos de entrenamiento,
+    def SGD(self, training_data, epochs, mini_batch_size, eta, #Se define el algoritmo SGD (Stochastic Gradient Descent).
+            #Se usa para entrenar la red neuronal. Recibe como primer argumento los datos de entrenamiento,
             # después el número de épocas, después el tamaño de los mini batches, y al final el eta
             test_data=None):
-        """Train the neural network using mini-batch stochastic
+        """Entrenar la red neuronal usando el Stochastic Gradient descent de mini-batch.
+        El 'training_data' es una lista de tuplas '(x,y)', que representan los inputs de entrenamiento y los outputs deseados.
+        Los demás parámetros no opcionales se explican por sí solos.
+        Si se proporciona el 'test_data', la red se evaluará con los datos de prueba después de cada época y se imprimirá el progreso parcial.
+        Esto es útil para seguir el progreso, pero ralentiza considerablemente el proceso.
+        
+        Train the neural network using mini-batch stochastic
         gradient descent.  The ``training_data`` is a list of tuples
         ``(x, y)`` representing the training inputs and the desired
         outputs.  The other non-optional parameters are
