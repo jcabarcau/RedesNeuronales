@@ -107,10 +107,10 @@ class Network(object): #Instrucciones para construir una Red Neuronal.
         nabla_b = [np.zeros(b.shape) for b in self.biases] #Se inicializa una lista 'nabla_b' con gradientes de la función de costo con respecto a los biases.
         # Cada elemento de la lista es una matriz de ceros con la misma forma que el bias correspondiente.
         nabla_w = [np.zeros(w.shape) for w in self.weights] #Similar a la línea anterior pero para los pesos.
-        ## Feedforward
+        '''Feedforward'''
         activation = x #Se inicializa 'activation' con la entrada 'x'. Esta variable se utilizará para almacenar las activaciones de cada capa durante el proceso de backpropagation.
-        activations = [x] ##Lista para almacenar todas las activaciones, capa por capa.
-        zs = [] ##Lista para almacenar todos los vectores z, capa por capa.
+        activations = [x] '''Lista para almacenar todas las activaciones, capa por capa.'''
+        zs = [] '''Lista para almacenar todos los vectores z, capa por capa.'''
         #[] significa que se le asigna una lista vacía a zs.
         for b, w in zip(self.biases, self.weights): #Se inicia un bucle que itera sobre cada bias 'b' y peso 'w' en la red neuronal.
             z = np.dot(w, activation)+b #Calcula la entrada ponderada de la neurona sumando el producto punto de los pesos 'w' y la activación anterior con el bias 'b'.
@@ -139,25 +139,28 @@ class Network(object): #Instrucciones para construir una Red Neuronal.
     #En resumen, este método implementa el algoritmo Backpropagation para calcular los gradientes de la función de costo con respecto a los biases y pesos de la red neuronal.
     #Estos gradientes se usan luego para actualizar los parámetros durante el entrenamiento mediante el método SGD.
 
-    def evaluate(self, test_data):
-        """Return the number of test inputs for which the neural
-        network outputs the correct result. Note that the neural
-        network's output is assumed to be the index of whichever
-        neuron in the final layer has the highest activation."""
+    def evaluate(self, test_data): #Definimos la función 'evaluate' donde 'test_data' es una lista de tuplas de los datos de prueba, donde cada tupla contiene una entrada 'x'
+        # y una salida deseada 'y'.
+        """Devuelve el número de entradas de prueba para las cuales la red neuronal genera el resultado correcto.
+        Tenga en cuenta que se supone que el output de la red neuronal es el índice de la neurona de la capa final que tenga mayor activación."""
         test_results = [(np.argmax(self.feedforward(x)), y)
-                        for (x, y) in test_data]
-        return sum(int(x == y) for (x, y) in test_results)
+                        for (x, y) in test_data] #Para cada entrada 'x' en el conjunto de datos de prueba, la red neuronal realiza una predicción utilizando la función 'feedforward'
+        # y se compara la predicción con la salida deseada 'y'. Los resultados se almacenan en la lista 'test_results', donde cada elemento es una tupla de 'x' y 'y'.
+        return sum(int(x == y) for (x, y) in test_results) #Retorna la suma de las coincidencias entre las predicciones de la red y las salidas deseadas en los datos de prueba.
+        #La expresión 'int(x == y)' es 1 si 'x' es igual a 'y', y 0 en caso contrario. Por lo tanto, la función devuelve la cantidad total de predicciones correctas.
 
-    def cost_derivative(self, output_activations, y):
-        """Return the vector of partial derivatives \partial C_x /
-        \partial a for the output activations."""
-        return (output_activations-y)
+    def cost_derivative(self, output_activations, y): #Definimos la derivada parcial de la función de costo donde 'output_activations' representa las activaciones
+        # de salida de la red neuronal, es decir, las predicciones de la red para un ejemplo de entrada. Y 'y' representa la salida deseada para el mismo ejemplo de entrada.
+        """Devuelve el vector de derivadas parciales {\partial C_x}/{/partial a} para las activaciones de salida (output activations)."""
+        return (output_activations-y) #Retorna la derivada parcial de la función de costo con respecto a las activaciones de salida.
+        #Esta función se utiliza en el proceso de backpropagation para calcular los gradientes necesarios para ajustar los parámetros de la red neuronal.
+    
 
-#### Miscellaneous functions
+#### Otras funciones
 def sigmoid(z):
-    """The sigmoid function."""
+    """La función sigmoide."""
     return 1.0/(1.0+np.exp(-z))
 
 def sigmoid_prime(z):
-    """Derivative of the sigmoid function."""
+    """Derivada de la función sigmoide."""
     return sigmoid(z)*(1-sigmoid(z))
