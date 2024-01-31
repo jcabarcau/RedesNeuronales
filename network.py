@@ -80,28 +80,30 @@ class Network(object): #Instrucciones para construir una Red Neuronal.
                 print("Epoch {0} complete".format(j)) #Imprime el número de época e indica que se ha completado la época actual del entrenamiento de la red neuronal.
                 #A mayor learning rate, más alto es el número obtenido en la primera época,
                 # pero si el learning rate es muy pequeño, puede ajustarse mejor a los datos de prueba, o puede tener un sobreajuste de datos.
+        #En resumen, este código implimenta el entrenamiento de la red neuronal utilizando el algoritmo SGD. Cada época implica 'barajar' los datos de entrenamiento,
+        # dividirlos en mini-batches, y actualizar los pesos y biases de la red neuronal para MINIMIZAR LA FUNCIÓN DE COSTO.
 
-    def update_mini_batch(self, mini_batch, eta):
-        """Update the network's weights and biases by applying
-        gradient descent using backpropagation to a single mini batch.
-        The ``mini_batch`` is a list of tuples ``(x, y)``, and ``eta``
-        is the learning rate."""
-        nabla_b = [np.zeros(b.shape) for b in self.biases]
-        nabla_w = [np.zeros(w.shape) for w in self.weights]
-        for x, y in mini_batch:
-            delta_nabla_b, delta_nabla_w = self.backprop(x, y)
-            nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
-            nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
+    def update_mini_batch(self, mini_batch, eta): #Define la función 'update_mini_batch'.
+        """Actualiza los pesos y biases de la red aplicando un gradient descent usando backpropagation para un único mini batch.
+        El 'mini_batch' es una lista de tuplas '(x,y)' y 'eta' es la taza de aprendizaje."""
+        nabla_b = [np.zeros(b.shape) for b in self.biases] #Se inicializa 'nabla_b' como una lista de matrices de ceros, donde cada matriz tiene la misma forma que el bias
+        # correspondiente en la red neuronal. Esto se utilizará para acumular los gradientes de la función de costo con respecto a los biases durante el backpropagation.
+        nabla_w = [np.zeros(w.shape) for w in self.weights] #Similar a la línea anterior, pero para los pesos.
+        for x, y in mini_batch: #Bucle que itera sobre cada ejemplo '(x,y)' en el mini-batch.
+            delta_nabla_b, delta_nabla_w = self.backprop(x, y) #Llama al método 'backprop' para calcular los gradientes de la función de costo con respecto a los biases (delta_nabla_b)
+            # y los pesos (delta_nabla_w) utilizando el ejemplo actual y su etiqueta correspondiente.
+            nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)] #Acumula los gradientes de los biases para cada ejemplo en el mini-batch.
+            nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)] #Acumula los gradientes de los pesos para cada ejemplo en el mini-batch.
         self.weights = [w-(eta/len(mini_batch))*nw
-                        for w, nw in zip(self.weights, nabla_w)]
+                        for w, nw in zip(self.weights, nabla_w)] #Actualiza los pesos de la red neuronal utilizando el gradient descent.
+        #Para cada peso, se resta un término proporcional al gradiente del peso multiplicado por el learning rate y dividido por el tamaño del mini-batch.
         self.biases = [b-(eta/len(mini_batch))*nb
-                       for b, nb in zip(self.biases, nabla_b)]
+                       for b, nb in zip(self.biases, nabla_b)] #Similar al paso anterior, pero actualiza los biases.
+        #En resumen, este método se encarga de actualizar los pesos y los biases de la red neuronal, utilizando el método SGD en un mini-batch durante el entrenamiento.
 
     def backprop(self, x, y):
-        """Return a tuple ``(nabla_b, nabla_w)`` representing the
-        gradient for the cost function C_x.  ``nabla_b`` and
-        ``nabla_w`` are layer-by-layer lists of numpy arrays, similar
-        to ``self.biases`` and ``self.weights``."""
+        """Devuelve una tupla '(nabla_b, nabla_w)', que representa el gradiente de la función de costo C_x.
+        'nabla_b' y 'nabla_w' son listas capa por capa de matríces numpy, similares a 'self.biases' y 'self.weights'."""
         nabla_b = [np.zeros(b.shape) for b in self.biases]
         nabla_w = [np.zeros(w.shape) for w in self.weights]
         # feedforward
