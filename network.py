@@ -49,35 +49,26 @@ class Network(object): #Instrucciones para construir una Red Neuronal.
 
     def SGD(self, training_data, epochs, mini_batch_size, eta, #Se define el algoritmo SGD (Stochastic Gradient Descent).
             #Se usa para entrenar la red neuronal. Recibe como primer argumento los datos de entrenamiento,
-            # después el número de épocas, después el tamaño de los mini batches, y al final el eta
+            # después el número de épocas, después el tamaño de los mini batches, y al final el eta.
             test_data=None):
-        """Entrenar la red neuronal usando el Stochastic Gradient descent de mini-batch.
-        El 'training_data' es una lista de tuplas '(x,y)', que representan los inputs de entrenamiento y los outputs deseados.
+        """Entrena la red neuronal usando el Stochastic Gradient descent de mini-batches.
+        El 'training_data' es una lista de tuplas '(x,y)' que representan los training inputs y los outputs deseados.
         Los demás parámetros no opcionales se explican por sí solos.
-        Si se proporciona el 'test_data', la red se evaluará con los datos de prueba después de cada época y se imprimirá el progreso parcial.
-        Esto es útil para seguir el progreso, pero ralentiza considerablemente el proceso.
-        
-        Train the neural network using mini-batch stochastic
-        gradient descent.  The ``training_data`` is a list of tuples
-        ``(x, y)`` representing the training inputs and the desired
-        outputs.  The other non-optional parameters are
-        self-explanatory.  If ``test_data`` is provided then the
-        network will be evaluated against the test data after each
-        epoch, and partial progress printed out.  This is useful for
-        tracking progress, but slows things down substantially."""
-        if test_data:
-            test_data = list(test_data)
-            n_test = len(test_data)
+        Si se proporciona 'test_data', la red se evaluará con los test data después de cada época y se imprimirá el progreso parcial.
+        Esto es útil para seguir el progreso, pero ralentiza considerablemente el proceso."""
+        if test_data: #Verifica si se proporcionaron los datos de prueba.
+            test_data = list(test_data) #Los datos de prueba proporcionados se convierten en una lista.
+            n_test = len(test_data) #Almacena la longitud del conjunto de datos en 'n_test'.
 
-        training_data = list(training_data)
-        n = len(training_data)
-        for j in range(epochs):
-            random.shuffle(training_data)
+        training_data = list(training_data) #Crea una lista con los datos de entrenamiento.
+        n = len(training_data) #Almacena la longitud del conjunto de datos de entrenamiento en la variable 'n'.
+        for j in range(epochs): #Bucle que se ejecuta un número específico de épocas.
+            random.shuffle(training_data) #Reorganiza los datos de entrenamiento aleatoriamente. Esto garantiza que la red neuronal no se entrene en el mismo orden en cada época.
             mini_batches = [
                 training_data[k:k+mini_batch_size]
-                for k in range(0, n, mini_batch_size)]
-            for mini_batch in mini_batches:
-                self.update_mini_batch(mini_batch, eta)
+                for k in range(0, n, mini_batch_size)] #Divide el conjunto de datos de entrenamiento en mini-batches del tamaño especificado 'mini_batch_size'.
+            for mini_batch in mini_batches: #Itera sobre cada minibatch.
+                self.update_mini_batch(mini_batch, eta) #Llama al método 'update
             if test_data: #Imprime la cantidad de épocas en las que va la simulación (A mayor learning rate, más alto es el número obtenido en la primera época, 
                 #pero si el learning rate es muy pequeño, puede ajustarse mejor a los datos de prueba, o puede tener un sobreajuste de datos).
                 print("Epoch {0}: {1} / {2}".format(
