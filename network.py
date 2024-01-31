@@ -49,7 +49,7 @@ class Network(object): #Instrucciones para construir una Red Neuronal.
 
     def SGD(self, training_data, epochs, mini_batch_size, eta, #Se define el algoritmo SGD (Stochastic Gradient Descent).
             #Se usa para entrenar la red neuronal. Recibe como primer argumento los datos de entrenamiento,
-            # después el número de épocas, después el tamaño de los mini batches, y al final el eta.
+            # después el número de épocas, después el tamaño de los mini batches, y al final la tasa de aprendizaje (learning rate), 'eta'.
             test_data=None):
         """Entrena la red neuronal usando el Stochastic Gradient descent de mini-batches.
         El 'training_data' es una lista de tuplas '(x,y)' que representan los training inputs y los outputs deseados.
@@ -68,13 +68,18 @@ class Network(object): #Instrucciones para construir una Red Neuronal.
                 training_data[k:k+mini_batch_size]
                 for k in range(0, n, mini_batch_size)] #Divide el conjunto de datos de entrenamiento en mini-batches del tamaño especificado 'mini_batch_size'.
             for mini_batch in mini_batches: #Itera sobre cada minibatch.
-                self.update_mini_batch(mini_batch, eta) #Llama al método 'update
-            if test_data: #Imprime la cantidad de épocas en las que va la simulación (A mayor learning rate, más alto es el número obtenido en la primera época, 
-                #pero si el learning rate es muy pequeño, puede ajustarse mejor a los datos de prueba, o puede tener un sobreajuste de datos).
+                self.update_mini_batch(mini_batch, eta) #Llama al método 'update_mini_batch', el cual actualiza los pesos y bias de la red neuronal utilizando el mini-batch
+                #actual y el learning rate 'eta'.
+            if test_data: #Verifica si se proporcionaron datos de prueba 
                 print("Epoch {0}: {1} / {2}".format(
-                    j, self.evaluate(test_data), n_test))
+                    j, self.evaluate(test_data), n_test)) #Imprime la cantidad de épocas en las que va la simulación. {0}, {1} y {2} actúan como marcadores de posición para los
+                # valores que se insertarán después usando '.format(j, self.evaluate(test_data), n_test)', el cual sustituye {0} por 'j' (el número de la época actual),
+                # {1} por 'self.evaluate(test_data)' (valor que representa la presición de la red neuronal en el conjunto de datos de prueba),
+                # y {2} por 'n_test' (la longitud de los datos de prueba.)
             else:
-                print("Epoch {0} complete".format(j))
+                print("Epoch {0} complete".format(j)) #Imprime el número de época e indica que se ha completado la época actual del entrenamiento de la red neuronal.
+                #A mayor learning rate, más alto es el número obtenido en la primera época,
+                # pero si el learning rate es muy pequeño, puede ajustarse mejor a los datos de prueba, o puede tener un sobreajuste de datos.
 
     def update_mini_batch(self, mini_batch, eta):
         """Update the network's weights and biases by applying
