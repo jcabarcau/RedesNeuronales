@@ -104,35 +104,40 @@ class Network(object): #Instrucciones para construir una Red Neuronal.
     def backprop(self, x, y):
         """Devuelve una tupla '(nabla_b, nabla_w)', que representa el gradiente de la función de costo C_x.
         'nabla_b' y 'nabla_w' son listas capa por capa de matríces numpy, similares a 'self.biases' y 'self.weights'."""
-        nabla_b = [np.zeros(b.shape) for b in self.biases]
-        nabla_w = [np.zeros(w.shape) for w in self.weights]
-        # feedforward
-        activation = x
-        activations = [x] # list to store all the activations, layer by layer
-        zs = [] # list to store all the z vectors, layer by layer
-        for b, w in zip(self.biases, self.weights):
-            z = np.dot(w, activation)+b
-            zs.append(z)
-            activation = sigmoid(z)
-            activations.append(activation)
-        # backward pass
+        nabla_b = [np.zeros(b.shape) for b in self.biases] #Se inicializa una lista 'nabla_b' con gradientes de la función de costo con respecto a los biases.
+        # Cada elemento de la lista es una matriz de ceros con la misma forma que el bias correspondiente.
+        nabla_w = [np.zeros(w.shape) for w in self.weights] #Similar a la línea anterior pero para los pesos.
+        ## Feedforward
+        activation = x #Se inicializa 'activation' con la entrada 'x'. Esta variable se utilizará para almacenar las activaciones de cada capa durante el proceso de backpropagation.
+        activations = [x] ##Lista para almacenar todas las activaciones, capa por capa.
+        zs = [] ##Lista para almacenar todos los vectores z, capa por capa.
+        #[] significa que se le asigna una lista vacía a zs.
+        for b, w in zip(self.biases, self.weights): #Se inicia un bucle que itera sobre cada bias 'b' y peso 'w' en la red neuronal.
+            z = np.dot(w, activation)+b #Calcula la entrada ponderada de la neurona sumando el producto punto de los pesos 'w' y la activación anterior con el bias 'b'.
+            zs.append(z) #Agrega la entrada ponderada 'z' a la lista 'zs'.
+            activation = sigmoid(z) #Calcula la activación de la neurona aplicando la función de activación sigmoide a la entrada ponderada 'z'.
+            activations.append(activation) #Agrega la activación 'activation'a la lista 'activations'.
+        # Backward Pass
         delta = self.cost_derivative(activations[-1], y) * \
-            sigmoid_prime(zs[-1])
-        nabla_b[-1] = delta
-        nabla_w[-1] = np.dot(delta, activations[-2].transpose())
-        # Note that the variable l in the loop below is used a little
-        # differently to the notation in Chapter 2 of the book.  Here,
-        # l = 1 means the last layer of neurons, l = 2 is the
-        # second-last layer, and so on.  It's a renumbering of the
-        # scheme in the book, used here to take advantage of the fact
-        # that Python can use negative indices in lists.
-        for l in range(2, self.num_layers):
-            z = zs[-l]
-            sp = sigmoid_prime(z)
-            delta = np.dot(self.weights[-l+1].transpose(), delta) * sp
-            nabla_b[-l] = delta
-            nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
-        return (nabla_b, nabla_w)
+            sigmoid_prime(zs[-1]) #Calcula el error en la capa de salida multiplicando la derivada de la función de costo con respecto a la activación 'self.cost_derivative'
+            # por la derivada de la función de activación en la capa de salida 'sigmoid_prime'.
+        nabla_b[-1] = delta #Asigna el error calculado a la última capa de biases en 'nabla_b'.
+        nabla_w[-1] = np.dot(delta, activations[-2].transpose()) #Calcula el gradiente de la función de costo con respecto a los pesos en la última capa y lo asigna a 'nabla_w[-1]'.
+        '''Tenga en cuenta que la variable 'l' en el bucle siguiente se usa de manera un poco diferente a la notación del Capítulo 2 del libro.
+        Aquí, l=1 significa la última capa de neuronas, l=2 es la penúltima capa, y así sucesivamente.
+        Es una renumeración del esquema del libro, que se usa aquí para aprovechar el hecho de que Python puede usar índices negativos en las listas.'''
+        for l in range(2, self.num_layers): #Inicia otro bucle que itera sobre las capas desde  la última hasta la segunda capa.
+            z = zs[-l] #Obtiene la entrada ponderada de la capa actual.
+            sp = sigmoid_prime(z) #Calcula la derivada de la función de activación en la capa actual.
+            delta = np.dot(self.weights[-l+1].transpose(), delta) * sp #Calcula el error en la capa actual propagando hacia atrás el error desde la capa siguiente,
+            # multiplicando por la derivada de la función de activación en la capa actual.
+            nabla_b[-l] = delta #Asigna el error calculado a la capa actual de biases en 'nabla_b'.
+            nabla_w[-l] = np.dot(delta, activations[-l-1].transpose()) #Calcula el gradiente de la función de costo con respecto a los pesos en la capa actual
+            # y lo asigna a 'nabla_w[-1]'
+        return (nabla_b, nabla_w) #Retorna las listas 'nabla_b' y 'nabla_w', que contienen los gradientes de la función de costo con respecto a los biases y pesos,
+        #respectivamente, para cada capa de la red neuronal.
+    #En resumen, este método implementa el algoritmo Backpropagation para calcular los gradientes de la función de costo con respecto a los biases y pesos de la red neuronal.
+    #Estos gradientes se usan luego para actualizar los parámetros durante el entrenamiento mediante el método SGD.
 
     def evaluate(self, test_data):
         """Return the number of test inputs for which the neural
