@@ -109,8 +109,8 @@ class Network(object): #Instrucciones para construir una Red Neuronal.
         nabla_w = [np.zeros(w.shape) for w in self.weights] #Similar a la línea anterior pero para los pesos.
         '''Feedforward'''
         activation = x #Se inicializa 'activation' con la entrada 'x'. Esta variable se utilizará para almacenar las activaciones de cada capa durante el proceso de backpropagation.
-        activations = [x] '''Lista para almacenar todas las activaciones, capa por capa.'''
-        zs = [] '''Lista para almacenar todos los vectores z, capa por capa.'''
+        activations = [x] #Lista para almacenar todas las activaciones, capa por capa.
+        zs = [] #Lista para almacenar todos los vectores z, capa por capa.
         #[] significa que se le asigna una lista vacía a zs.
         for b, w in zip(self.biases, self.weights): #Se inicia un bucle que itera sobre cada bias 'b' y peso 'w' en la red neuronal.
             z = np.dot(w, activation)+b #Calcula la entrada ponderada de la neurona sumando el producto punto de los pesos 'w' y la activación anterior con el bias 'b'.

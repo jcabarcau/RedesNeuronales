@@ -11,10 +11,13 @@ net=network.Network([784,30,10])
 
 net.SGD( training_data, 30, 10, 3.0, test_data=test_data)
 
-archivo = open("red_prueba1.pkl",'wb')
+archivo = open("red_prueba1.pkl",'wb') #pkl: Archivo-extensión de la librería Pickle: Vacía todo el contenido del objeto en ese archivo 
+#(Ya no se queda guardado en la memoria, sino que ahora se guarda en el disco).
 pickle.dump(net,archivo)
 archivo.close()
 exit()
+#leer el archivo
+
 archivo_lectura = open("red_prueba.pkl",'rb')
 net = pickle.load(archivo_lectura)
 archivo_lectura.close()
@@ -26,5 +29,6 @@ pickle.dump(net,archivo)
 archivo.close()
 exit()
 
+#esquema de como usar la red :
 imagen = leer_imagen("disco.jpg")
 print(net.feedforward(imagen))

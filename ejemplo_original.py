@@ -15,6 +15,8 @@ archivo = open("red_prueba1.pkl",'wb')
 pickle.dump(net,archivo)
 archivo.close()
 exit()
+#leer el archivo
+
 archivo_lectura = open("red_prueba.pkl",'rb')
 net = pickle.load(archivo_lectura)
 archivo_lectura.close()
@@ -26,5 +28,6 @@ pickle.dump(net,archivo)
 archivo.close()
 exit()
 
+#esquema de como usar la red :
 imagen = leer_imagen("disco.jpg")
 print(net.feedforward(imagen))
