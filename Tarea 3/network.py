@@ -78,7 +78,7 @@ class Network(object):
         return sum(int(x == y) for (x, y) in test_results)
 
     def cost_derivative(self, output_activations, y):
-        return (output_activations-y) / len(output_activations) #Modificación para usar la función de costo de cross-entropy
+        return (output_activations-y) / len(output_activations) #Modificación para usar la función de costo de cross-entropy (verificar)
 
 def sigmoid(z):
     return 1.0/(1.0+np.exp(-z))

@@ -1,19 +1,15 @@
 """
-network.py
-~~~~~~~~~~
 Módulo para implementar el algoritmo de aprendizaje 'Stochastic Gradient Descent' (SGD) para una red neuronal 'feedforward'.
 Los gradientes se calculan usando el algoritmo 'backpropagation'.
 (Según el autor, este código no está del todo optimizado y omite muchas características deseables).
 """
-
 #### Librerías
 # Librerías estándar
 import random
-
 # Librerías de terceros
 import numpy as np #Librería que ayuda a interpretar los datos como una matríz V[x,y] (con x renglones y y filas), ayudando a manipular la información de los datos.
 # Esta librería tiene que ser instalada individualmente en el ordenador.
-# En el caso de Windows, esta puede instalarse en el Bash de Git, o en Windows PowerShell, con el comando 'pip3 install numpy' (Para Python 3).
+# En el caso de Windows, esta puede instalarse en el Bash de Git, o en Windows PowerShell, con el comando 'pip install numpy' (Para Python 3).
 
 class Network(object): #Instrucciones para construir una Red Neuronal. 
     #Definimos la clase 'Network' como un objeto. Las variables en python son 'etiquetas' de los objetos.
